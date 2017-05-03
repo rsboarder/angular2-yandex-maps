@@ -97,8 +97,11 @@ export class YaMapsAPIWrapper {
             claster.markers.forEach((x: mapTypes.MarkerClaster) =>
             {
                 let point = new ymaps.GeoObject({
-                              geometry: { type: x.type, coordinates: [x.lat, x.lng] }
-                          });
+                  geometry: { type: x.type, coordinates: [x.lat, x.lng] }, properties: {
+                    balloonContentHeader: x.balloonContentHeader,
+                    balloonContentBody: x.balloonContentBody
+                  }
+                });
                 myGeoObjects.push(point);
             });
 
