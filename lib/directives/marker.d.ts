@@ -3,6 +3,7 @@ import * as mapTypes from '../ya-maps-types';
 import { MarkerManager } from '../services/managers/marker-manager';
 export declare class YaMarker implements OnChanges, OnDestroy {
     private _markerManager;
+    id: string;
     latitude: number;
     longitude: number;
     balloonLayout: any;
@@ -16,7 +17,7 @@ export declare class YaMarker implements OnChanges, OnDestroy {
     private _markerAddedToManger;
     private _id;
     private _observableSubscriptions;
-    markerClick: EventEmitter<void>;
+    markerClick: EventEmitter<YaMarker>;
     dragEnd: EventEmitter<mapTypes.MapMouseEvent>;
     constructor(_markerManager: MarkerManager);
     ngOnChanges(changes: {

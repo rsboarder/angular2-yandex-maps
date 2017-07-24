@@ -15,11 +15,12 @@ let markerId = 0;
   ],
   inputs: [
     'latitude', 'longitude', 'balloonLayout', 'balloonContentHeader', 'balloonContentBody', 'balloonContentFooter', 
-    'draggable', 'preset', 'iconContent', 'showInfo'],
+    'draggable', 'preset', 'iconContent', 'showInfo', 'id'],
   outputs: ['markerClick', 'dragEnd']
 })
 
 export class YaMarker implements OnChanges, OnDestroy {
+    id: string;
     latitude: number;
     longitude: number;
     balloonLayout: any;
@@ -36,11 +37,11 @@ export class YaMarker implements OnChanges, OnDestroy {
     private _observableSubscriptions: Subscription[] = [];
 
 
-    markerClick: EventEmitter<void> = new EventEmitter<void>();
+    markerClick: EventEmitter<YaMarker> = new EventEmitter<YaMarker>();
     dragEnd: EventEmitter<mapTypes.MapMouseEvent> = new EventEmitter<mapTypes.MapMouseEvent>();
 
     constructor(private _markerManager: MarkerManager){
-        this._id = (markerId++).toString();
+        this._id = this.id || (markerId++).toString();
     }
 
   ngOnChanges(changes: {[key: string]: SimpleChange}) {
@@ -60,8 +61,10 @@ export class YaMarker implements OnChanges, OnDestroy {
 
     // click event
     const cs = this._markerManager.createEventObservable('click', this).subscribe(() => {
-      this._markerManager.showBalloon(this);
-      this.markerClick.emit(null);
+        if (this.showInfo) {
+            this._markerManager.showBalloon(this);
+        }
+      this.markerClick.emit(this);
     });
     this._observableSubscriptions.push(cs);
     // dragend event 
